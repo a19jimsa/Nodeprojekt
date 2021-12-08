@@ -1,6 +1,17 @@
 class UserButton extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {show: false};
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(){
+        this.state.show = !this.state.show;
+        this.setState({show: this.state.show});
+    }
     render() { 
-        return <div><button>Logga in</button><button>Skapa konto</button></div>;
+        return <div><CreateUser show={this.state.show} /><LoginUser show={this.state.show}/>
+            <button onClick={this.handleClick}>Logga in</button><button onClick={this.handleClick}>Skapa konto</button></div>;
     }
 }
 
