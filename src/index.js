@@ -2,8 +2,11 @@ const express = require('express')
 const app = express()
 const port = 3000
 
+app.use('/', express.static('src'))
+app.use('/components', express.static('components'))
+
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.sendFile('index.html',{root: '.'})
 })
 
 app.listen(port, () => {

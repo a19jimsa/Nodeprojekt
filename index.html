@@ -5,9 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="forum.css">
 </head>
 <body>
-    
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+    <script type="text/babel" src="/components/forumComponents.js"></script>
+    <script type="text/babel" src="/components/userComponents.js"></script>
+    <header>
+        <div class="head">
+            <div class="logo">few</div>
+            <div class="login">few</div>
+        </div>
+    </header>
+    <div class="menu">
+        <nav>
+            <ul>
+                <li>KNAPP</li>
+                <li>KNAPP</li>
+                <li>KNAPP</li>
+            </ul>
+        </nav>
+    </div>
+    <main>
+    <div id="content"></div>
+    <script type="text/babel">
+        ReactDOM.render(<Container />, document.getElementById("content"));
+        ReactDOM.render(<UserButton />, document.getElementsByClassName("login")[0]);
+    </script>
+    </main>
+    <footer>Footer</footer>
 </body>
 </html>

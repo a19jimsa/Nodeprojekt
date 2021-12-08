@@ -20504,8 +20504,10 @@ var require_express2 = __commonJS((exports2, module2) => {
 var express = require_express2();
 var app = express();
 var port = 3e3;
+app.use("/", express.static("src"));
+app.use("/components", express.static("components"));
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.sendFile("index.html", {root: "."});
 });
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
