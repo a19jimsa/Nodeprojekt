@@ -14,9 +14,7 @@
     <script type="text/babel" src="/components/forumComponents.js"></script>
     <script type="text/babel" src="/components/userComponents.js"></script>
     <header>
-        <div class="head">
-            <div class="logo">few</div>
-            <div class="login">few</div>
+        <div id="head">
         </div>
     </header>
     <div class="menu">
@@ -32,7 +30,7 @@
     <div id="content"></div>
     <script type="text/babel">
         ReactDOM.render(<Container />, document.getElementById("content"));
-        ReactDOM.render(<UserButton />, document.getElementsByClassName("login")[0]);
+        ReactDOM.render(<Header />, document.getElementById("head"));
     </script>
     </main>
     <footer>Footer</footer>

@@ -20,7 +20,6 @@ header{
     align-items: center;
     width: 60%;
     height: 50px;
-    border: 1px solid black;
     margin: auto;
     padding: 10px;
 }
@@ -69,7 +68,10 @@ nav{
 }
 
 .post{
-    margin-bottom: 10px;;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
 }
 
 .postHead{
@@ -90,9 +92,9 @@ nav{
 .postInfo{
     width: 25%;
     background-color: grey;
-    height: 100%;
     border-radius: 0px 0px 0px 6px;
     padding: 10px;
+    align-self: stretch;
 }
 
 .postComment{
@@ -103,16 +105,20 @@ nav{
     border-radius: 0px 0px 6px 0px;
     display: flex;
     flex-direction: column;
+    padding: 10px;
 }
 
 .postMessage{
     flex-basis: 80%;
-    border: 1px solid white;
 }
 
 .answerButton{
     flex-basis: 20%;
-    border: 1px solid blue;
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 10px;
 }
 
 .box{
@@ -128,7 +134,7 @@ nav{
     justify-content: center;
     align-items: center;
     box-shadow: 0px 0px 5px grey;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .closeButton{
@@ -140,4 +146,24 @@ nav{
     border-radius: 50%;
     background-color: grey;
     border: none;
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row;
+    width: auto;
+}
+
+.createPost{
+    width: 100%;
+    border-radius: 6px;
+    background-color: #282c34;
+    padding: 10px;
+}
+
+textarea{
+    width: 100%;
+    resize: vertical;
+    padding: 10px;
+    height: 150px;
 }

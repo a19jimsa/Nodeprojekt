@@ -9,6 +9,9 @@ app.get('/', (req, res) => {
   res.sendFile('index.html',{root: '.'})
 })
 
+const commentsRoute = require("./commentsRoute")
+app.use("/comments", commentsRoute);
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
