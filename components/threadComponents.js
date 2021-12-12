@@ -17,8 +17,8 @@ class ForumThreads extends React.Component {
         });
     }
 
-    handleClick(){
-        ReactDOM.render(<Container type="Forum" />, document.getElementById("content"));
+    handleClick(id){
+        ReactDOM.render(<Container type="Forum" id={id}/>, document.getElementById("content"));
     }
 
     render() { 
@@ -27,12 +27,12 @@ class ForumThreads extends React.Component {
             <table>
                 <thead>
                 <tr>
-                    <th>Rubrik</th><th>Kategori</th><th>Inlägg</th>
+                    <th>Rubrik</th><th>Kategori</th><th>Senaste inlägg</th>
                 </tr>
                 </thead>
                 <tbody>
                     {this.state.data.map(tag => <tr key={tag.id}>
-                        <td onClick={this.handleClick}>{tag.topic}</td><td>{tag.category}</td><td>{tag.lastPost}</td><td>{tag.user}</td>
+                        <td onClick={this.handleClick.bind(this, tag.id)}>{tag.topic}</td><td>{tag.category}</td><td>{tag.content} av {tag.user}</td>
                     </tr>)}
                 </tbody>
             </table>
@@ -82,11 +82,22 @@ class ThreadForm extends React.Component {
             "topic": "bblblblb",
             "category": "rgregre",
             "content": "efewfew",
+            "user": "Jimmy",
             "posted": Date.now().toLocaleString()
         }
 
         //create comment on city chatt
         await fetch("/threads/", {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json()).then(data => {
+                console.log(data);
+        });
+
+        //Create thread comment on comments
+        await fetch("/comments/1", {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
             body: JSON.stringify(data)

@@ -35,7 +35,7 @@ class Container extends React.Component {
         if(this.props.type == "Forum"){
             return <div className="container">
             <Breadcrums />
-            <Post />
+            <Post id={this.props.id}/>
             <AnswerButton value="Skriv svar" />
             </div>
         }else{
@@ -53,16 +53,36 @@ class Breadcrums extends React.Component {
 }
 
 class Post extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {data: []}
+    }
+
+    async componentDidMount(){
+        //create comment on city chatt
+        await fetch("/comments/"+this.props.id, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json' }
+        })
+            .then((response) => response.json()).then(data => {
+                console.log(data);
+                this.setState({data: data});
+        });
+    }
+
     render() { 
-        return <div className="post">
-            <div className="postHead">Datum: 2021-12-0 18:11</div>
-            <div className="postContent">
-                <div className="postInfo">Användarinfo</div>
-                <div className="postComment">
-                    <div className="postMessage">Message</div>
-                    <AnswerButton value="Citera" content="Detta är meddelandet att citera"/>
+        return <div>
+            {this.state.data.map(tag=><div key={tag.id} className="post">
+                <h1>{tag.topic}</h1>
+                <div className="postHead">Datum: {tag.posted}</div>
+                <div className="postContent">
+                    <div className="postInfo">{tag.user}</div>
+                    <div className="postComment">
+                        <div className="postMessage">{tag.content}</div>
+                        <AnswerButton value="Citera" content="Detta är meddelandet att citera"/>
+                    </div>
                 </div>
-            </div>
+            </div>)}
         </div>
     }
 }

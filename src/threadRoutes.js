@@ -13,7 +13,7 @@ db.connectToServer(function (err) {
 router.get("/", (req, res)=>{
     const dbConnect = db.getDb();
     dbConnect.collection('threads')
-    .find()
+    .find({})
     .toArray(function (err, result) {
         if (err) {
             console.log("Something went wrong with DB call", err)
@@ -26,11 +26,11 @@ router.get("/", (req, res)=>{
 // POST Add answer on specific comment on a city
 router.post("/", express.json(), function(req, res){
     const dbConnect = db.getDb();
-    var myobj = { ['id']: req.body.id, ['topic']: req.body.topic, ['category']:req.body.category, ['posted']:req.body.posted};
+    var myobj = { ['id']: req.body.id, ['topic']: req.body.topic, ['category']:req.body.category, ['content']:req.body.content,['posted']:req.body.posted, ['user']:req.body.user};
     dbConnect.collection("threads").insertOne(myobj, function(err, result) {
         if (err) throw err;
         console.log("1 document inserted");
-        res.status(201).send({msg: "OK"});
+        res.status(201).send({msg: result});
     });
 })
 
