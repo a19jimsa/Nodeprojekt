@@ -5,6 +5,18 @@ class ForumThreads extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
 
+    async componentDidMount(){
+        //create comment on city chatt
+        await fetch("/threads/", {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json' }
+        })
+            .then((response) => response.json()).then(data => {
+                console.log(data);
+                this.setState({data: data});
+        });
+    }
+
     handleClick(){
         ReactDOM.render(<Container type="Forum" />, document.getElementById("content"));
     }
@@ -65,16 +77,22 @@ class ThreadForm extends React.Component {
     }
 
     async createThread(){
+        const data = {
+            "id": 1,
+            "topic": "bblblblb",
+            "category": "rgregre",
+            "content": "efewfew",
+            "posted": Date.now().toLocaleString()
+        }
+
         //create comment on city chatt
-        await fetch("/comments/"+this.props.name, {
+        await fetch("/threads/", {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
             .then((response) => response.json()).then(data => {
-            this.componentDidMount();
-            this.handleClick();
-            this.handleClick();
+                console.log(data);
         });
     }
 

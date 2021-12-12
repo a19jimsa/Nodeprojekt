@@ -44757,6 +44757,40 @@ var require_commentsRoute = __commonJS((exports2, module2) => {
   module2.exports = router;
 });
 
+// src/threadRoutes.js
+var require_threadRoutes = __commonJS((exports2, module2) => {
+  var express2 = require_express2();
+  var router = express2.Router();
+  var db = require_mongo_connection();
+  db.connectToServer(function(err) {
+    if (err) {
+      console.error(err);
+      process.exit();
+    }
+  });
+  router.get("/", (req, res) => {
+    const dbConnect = db.getDb();
+    dbConnect.collection("comments").find().toArray(function(err, result) {
+      if (err) {
+        console.log("Something went wrong with DB call", err);
+      } else {
+        res.status(200).send(result);
+      }
+    });
+  });
+  router.post("/", express2.json(), function(req, res) {
+    const dbConnect = db.getDb();
+    var myobj = {["id"]: req.body.id, ["topic"]: req.body.topic, ["category"]: req.body.category, ["posted"]: req.body.posted};
+    dbConnect.collection("threads").insertOne(myobj, function(err, result) {
+      if (err)
+        throw err;
+      console.log("1 document inserted");
+      res.status(201).send({msg: "OK"});
+    });
+  });
+  module2.exports = router;
+});
+
 // src/index.js
 var {application} = require_express2();
 var express = require_express2();
@@ -44765,8 +44799,10 @@ app.use("/", express.static("src"));
 app.use("/components", express.static("components"));
 var commentsRoute = require_commentsRoute();
 app.use("/comments", commentsRoute);
+var threadRoute = require_threadRoutes();
+app.use("/threads", threadRoute);
 app.get("/", function(req, res) {
-  res.sendFile("src/index.html", {root: "."});
+  res.sendFile("/src/index.html", {root: "."});
   console.log("Start");
 });
 app.listen(3e3, function() {
