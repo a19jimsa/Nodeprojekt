@@ -32,7 +32,7 @@ class ForumThreads extends React.Component {
                 </thead>
                 <tbody>
                     {this.state.data.map(tag => <tr key={tag.id}>
-                        <td onClick={this.handleClick.bind(this, tag.id)}>{tag.topic}</td><td>{tag.category}</td><td>{tag.content} av {tag.user}</td>
+                        <td onClick={this.handleClick.bind(this, tag._id)}>{tag.topic}</td><td>{tag.category}</td><td>{tag.content} av {tag.user}</td>
                     </tr>)}
                 </tbody>
             </table>
@@ -78,7 +78,7 @@ class ThreadForm extends React.Component {
     }
 
     async createThread(){
-        const data = {
+        const thread = {
             "topic": this.state.topic,
             "category": this.state.category,
             "content": this.state.content,
@@ -90,20 +90,16 @@ class ThreadForm extends React.Component {
         await fetch("/threads/", {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then((response) => response.json()).then(data => {
-                console.log(data);
-        });
-
-        //Create thread comment on comments
-        await fetch("/comments/1", {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then((response) => response.json()).then(data => {
-                console.log(data);
+            body: JSON.stringify(thread)
+        }).then((response) => response.json()).then(data => {
+            //Create thread comment on comments
+            fetch("/comments/"+data.insertedId, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json' },
+                body: JSON.stringify(thread)
+                }).then((response) => response.json()).then(data => {
+                    console.log(data);
+            });
         });
     }
 

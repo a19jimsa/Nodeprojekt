@@ -72,7 +72,7 @@ class Post extends React.Component {
 
     render() { 
         return <div>
-            {this.state.data.map(tag=><div key={tag.id} className="post">
+            {this.state.data.map(tag=><div key={tag._id} className="post">
                 <h1>{tag.topic}</h1>
                 <div className="postHead">Datum: {tag.posted}</div>
                 <div className="postContent">

@@ -44754,9 +44754,9 @@ var require_commentsRoute = __commonJS((exports2, module2) => {
       }
     });
   });
-  router.post("/:id", express2.json(), function(req, res) {
+  router.post("/:threadId", express2.json(), function(req, res) {
     const dbConnect = db.getDb();
-    var myobj = {["id"]: req.params.id, ["content"]: req.body.content, ["posted"]: req.body.posted, ["user"]: req.body.user};
+    var myobj = {["id"]: req.params.threadId, ["content"]: req.body.content, ["posted"]: req.body.posted, ["user"]: req.body.user};
     dbConnect.collection("comments").insertOne(myobj, function(err, result) {
       if (err)
         throw err;
@@ -44795,7 +44795,7 @@ var require_threadRoutes = __commonJS((exports2, module2) => {
       if (err)
         throw err;
       console.log("1 document inserted");
-      res.status(201).send({msg: result});
+      res.status(201).send(result);
     });
   });
   module2.exports = router;
