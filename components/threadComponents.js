@@ -74,19 +74,19 @@ class ThreadForm extends React.Component {
         super(props);
 
         this.handleClick = this.handleClick.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
     }
 
     async createThread(){
         const data = {
-            "id": 1,
-            "topic": "bblblblb",
-            "category": "rgregre",
-            "content": "efewfew",
+            "topic": this.state.topic,
+            "category": this.state.category,
+            "content": this.state.content,
             "user": "Jimmy",
             "posted": Date.now().toLocaleString()
         }
 
-        //create comment on city chatt
+        //Create thread
         await fetch("/threads/", {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
@@ -111,15 +111,26 @@ class ThreadForm extends React.Component {
         this.createThread();
     }
 
+    handleOnChange(event){
+        const target = event.target;
+        const name = target.name;
+        const value = target.value;
+        this.setState({
+        [name]: value
+        });
+        console.log(name+" " +value);
+
+    }
+
     render() { 
         return <div className="box">
             <h1>Skapa ny tråd</h1>
             <label>Rubrik</label>
-            <input type="text" name="topic" />
+            <input type="text" name="topic" onChange={this.handleOnChange}/>
             <label>Kategori</label>
-            <input type="text" name="category" />
+            <input type="text" name="category" onChange={this.handleOnChange}/>
             <label>Inlägg</label>
-            <textarea name="content" />
+            <textarea name="content" onChange={this.handleOnChange}/>
             <input type="submit" value="Skapa tråd" onClick={this.handleClick}/>
         </div>
     }

@@ -24,9 +24,9 @@ router.get("/:id", (req, res)=>{
 })
 
 // POST Add comment on specific thread
-router.post("/:id", express.json(), function(req, res){
+router.post("/:threadId", express.json(), function(req, res){
     const dbConnect = db.getDb();
-    var myobj = { ['id']: req.params.id, ['content']:req.body.content,['posted']:req.body.posted, ['user']:req.body.user};
+    var myobj = { ['id']: req.params.threadId, ['content']:req.body.content,['posted']:req.body.posted, ['user']:req.body.user};
     dbConnect.collection("comments").insertOne(myobj, function(err, result) {
         if (err) throw err;
         console.log("1 document inserted");
