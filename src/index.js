@@ -1,17 +1,20 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const { application } = require("express");
+const express = require("express");
+
+const app = express();
 
 app.use('/', express.static('src'))
 app.use('/components', express.static('components'))
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html',{root: '.'})
-})
-
 const commentsRoute = require("./commentsRoute")
 app.use("/comments", commentsRoute);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+//Hämtar ut startup.html när localhost:3000 körs.
+app.get('/', function(req, res){
+    res.sendFile('src/index.html',{root: '.'})
+    console.log("Start");
+})
+
+app.listen(3000, function (){
+    console.log("Server started")
 })

@@ -13,24 +13,19 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script type="text/babel" src="/components/forumComponents.js"></script>
     <script type="text/babel" src="/components/userComponents.js"></script>
+    <script type="text/babel" src="/components/threadComponents.js"></script>
     <header>
         <div id="head">
         </div>
     </header>
-    <div class="menu">
-        <nav>
-            <ul>
-                <li>KNAPP</li>
-                <li>KNAPP</li>
-                <li>KNAPP</li>
-            </ul>
-        </nav>
+    <div id="menu">
     </div>
     <main>
     <div id="content"></div>
     <script type="text/babel">
         ReactDOM.render(<Container />, document.getElementById("content"));
         ReactDOM.render(<Header />, document.getElementById("head"));
+        ReactDOM.render(<Menu />, document.getElementById("menu"));
     </script>
     </main>
     <footer>Footer</footer>

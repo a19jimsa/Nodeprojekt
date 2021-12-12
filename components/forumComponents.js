@@ -1,10 +1,54 @@
-class Container extends React.Component {
+class Menu extends React.Component {
+    constructor(props) {
+        super(props);
+        
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(event){
+        const value = event.target.value;
+        ReactDOM.render(<Container type={value}/>, document.getElementById("content"));
+    }
+
     render() { 
-        return <div className="container">
-            <Post />
+        return(
+        <div className="menu">        
+            <nav>
+                <ul>
+                    <button onClick={this.handleClick} value="Forum">Forum</button>
+                    <button onClick={this.handleClick} value="Nyheter">Nyheter</button>
+                    <button onClick={this.handleClick} value="Trådar">Trådar</button>
+                </ul>
+            </nav>
+        </div>
+        )
+    }
+}
+
+class Container extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {type: ""}
+    }
+
+    render() {
+        if(this.props.type == "Forum"){
+            return <div className="container">
+            <Breadcrums />
             <Post />
             <AnswerButton value="Skriv svar" />
-        </div>;
+            </div>
+        }else{
+            return <div className="container">
+            <ForumThreads />
+            </div>
+        }
+    }
+}
+
+class Breadcrums extends React.Component {
+    render() { 
+        return <div className="breadcrums">Forum/Komponenter/Kylning</div>;
     }
 }
 
