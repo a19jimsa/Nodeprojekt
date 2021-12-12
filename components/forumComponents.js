@@ -79,7 +79,7 @@ class Post extends React.Component {
                     <div className="postInfo">{tag.user}</div>
                     <div className="postComment">
                         <div className="postMessage">{tag.content}</div>
-                        <AnswerButton value="Citera" content="Detta är meddelandet att citera"/>
+                        <AnswerButton value="Citera" content={tag.content} id={tag.id} username={tag.user}/>
                     </div>
                 </div>
             </div>)}
@@ -103,8 +103,7 @@ class AnswerButton extends React.Component {
         if(this.state.show){
             return(
             <div className="createPost">
-                <AnswerForm id={this.props.id} username={this.props.username} />
-                <button onClick={this.handleClick}>Svara</button>
+                <AnswerForm id={this.props.id} content={this.props.content} username={this.props.username} />
             </div>
             )
         }else{
@@ -148,10 +147,12 @@ class AnswerForm extends React.Component {
     }
 
     async createAnswer(){
+        const date = new Date();
+        const time = date.toLocaleDateString() + " " +date.toLocaleTimeString();
         const data = {
             "id": this.props.id,
             "content": this.state.content,
-            "posted": Date.now(),
+            "posted": time,
             "user": this.props.username
         }
         //create comment on city chatt
@@ -162,6 +163,7 @@ class AnswerForm extends React.Component {
         })
             .then((response) => response.json()).then(data => {
                 console.log(data);
+                ReactDOM.render(<Container type="" id={data.id} username={data.user}/>, document.getElementById("content"));
         });
     }
 

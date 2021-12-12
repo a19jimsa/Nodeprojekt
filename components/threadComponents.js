@@ -32,7 +32,7 @@ class ForumThreads extends React.Component {
                 </thead>
                 <tbody>
                     {this.state.data.map(tag => <tr key={tag._id}>
-                        <td onClick={this.handleClick.bind(this, tag._id, tag.user)}>{tag.topic}</td><td>{tag.category}</td><td>{tag.content} av {tag.user}</td>
+                        <td onClick={this.handleClick.bind(this, tag._id, tag.user)}>{tag.topic}</td><td>{tag.category}</td><td>{tag.content} av {tag.user} postat {tag.posted}</td>
                     </tr>)}
                 </tbody>
             </table>
@@ -83,7 +83,7 @@ class ThreadForm extends React.Component {
             "category": this.state.category,
             "content": this.state.content,
             "user": "Jimmy",
-            "posted": Date.now().toLocaleString()
+            "posted": new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString()
         }
 
         //Create thread
