@@ -9,6 +9,20 @@ db.connectToServer(function (err) {
   }
 });
 
+//GET all comments
+router.get("/", (req, res)=>{
+    const dbConnect = db.getDb();
+    dbConnect.collection('comments')
+    .find({})
+    .toArray(function (err, result) {
+        if (err) {
+            console.log("Something went wrong with DB call", err)
+        } else {
+            res.status(200).send(result);
+        }
+  });
+})
+
 //GET all comments on a specific thread
 router.get("/:id", (req, res)=>{
     const dbConnect = db.getDb();
@@ -26,7 +40,7 @@ router.get("/:id", (req, res)=>{
 // POST Add comment on specific thread
 router.post("/:threadId", express.json(), function(req, res){
     const dbConnect = db.getDb();
-    var myobj = { ['id']: req.params.threadId, ['content']:req.body.content,['posted']:req.body.posted, ['user']:req.body.user};
+    var myobj = { ['id']: req.params.threadId,['topic']:req.body.topic ,['content']:req.body.content,['posted']:req.body.posted, ['user']:req.body.user};
     dbConnect.collection("comments").insertOne(myobj, function(err, result) {
         if (err) throw err;
         console.log("1 document inserted");

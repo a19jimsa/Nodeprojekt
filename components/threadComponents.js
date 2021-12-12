@@ -17,8 +17,8 @@ class ForumThreads extends React.Component {
         });
     }
 
-    handleClick(id){
-        ReactDOM.render(<Container type="Forum" id={id}/>, document.getElementById("content"));
+    handleClick(id, username){
+        ReactDOM.render(<Container type="Forum" id={id} username={username}/>, document.getElementById("content"));
     }
 
     render() { 
@@ -31,8 +31,8 @@ class ForumThreads extends React.Component {
                 </tr>
                 </thead>
                 <tbody>
-                    {this.state.data.map(tag => <tr key={tag.id}>
-                        <td onClick={this.handleClick.bind(this, tag._id)}>{tag.topic}</td><td>{tag.category}</td><td>{tag.content} av {tag.user}</td>
+                    {this.state.data.map(tag => <tr key={tag._id}>
+                        <td onClick={this.handleClick.bind(this, tag._id, tag.user)}>{tag.topic}</td><td>{tag.category}</td><td>{tag.content} av {tag.user}</td>
                     </tr>)}
                 </tbody>
             </table>

@@ -36,7 +36,7 @@ class Container extends React.Component {
             return <div className="container">
             <Breadcrums />
             <Post id={this.props.id}/>
-            <AnswerButton value="Skriv svar" />
+            <AnswerButton value="Skriv svar" id={this.props.id} username={this.props.username} />
             </div>
         }else{
             return <div className="container">
@@ -103,27 +103,14 @@ class AnswerButton extends React.Component {
         if(this.state.show){
             return(
             <div className="createPost">
-                <textarea type="text"onChange={this.handleOnChange}></textarea>
-                <button>Svara</button>
+                <AnswerForm id={this.props.id} username={this.props.username} />
+                <button onClick={this.handleClick}>Svara</button>
             </div>
             )
         }else{
             return <div className="answerButton"><button onClick={this.handleClick}>{this.props.value}</button></div>
         }
         
-    }
-}
-
-class Answer extends React.Component {
-    constructor(props) {
-        super(props);
-
-    }
-
-    render() { 
-        return <div>
-            <textarea></textarea>
-        </div>;
     }
 }
 
@@ -160,23 +147,35 @@ class AnswerForm extends React.Component {
         this.handleOnChange = this.handleOnChange.bind(this);
     }
 
-    handleClick(){
+    async createAnswer(){
+        const data = {
+            "id": this.props.id,
+            "content": this.state.content,
+            "posted": Date.now(),
+            "user": this.props.username
+        }
+        //create comment on city chatt
+        await fetch("/comments/"+this.props.id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json()).then(data => {
+                console.log(data);
+        });
+    }
 
+    handleClick(){
+        this.createAnswer();
     }
 
     handleOnChange(event){
-        this.state({value: event.target.value});
+        this.setState({content: event.target.value});
     }
     render() { 
         return <div className="createPost">
             <textarea onChange={this.handleOnChange} placeholder={this.state.content}></textarea>
-            <button onClick={this.handleClick}>Svara</button>
+            <button onClick={this.handleClick}>Skicka meddleande</button>
         </div>;
-    }
-}
-
-class Stuf extends React.Component {
-    render() { 
-        return <div></div>;
     }
 }
