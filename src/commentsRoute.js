@@ -44,7 +44,7 @@ router.post("/:threadId", express.json(), function(req, res){
     dbConnect.collection("comments").insertOne(myobj, function(err, result) {
         if (err) throw err;
         console.log("1 document inserted");
-        res.status(201).send({msg: result});
+        res.status(201).send(result);
     });
 })
 

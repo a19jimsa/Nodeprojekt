@@ -35,7 +35,7 @@ class Container extends React.Component {
         if(this.props.type == "Forum"){
             return <div className="container">
             <Breadcrums />
-            <Post id={this.props.id}/>
+            <Post id={this.props.id} />
             <AnswerButton value="Skriv svar" id={this.props.id} username={this.props.username} />
             </div>
         }else{
@@ -56,6 +56,8 @@ class Post extends React.Component {
     constructor(props) {
         super(props);
         this.state = {data: []}
+        console.log("Posten har laddats");
+        this.handleClick = this.handleClick.bind(this);
     }
 
     async componentDidMount(){
@@ -70,6 +72,30 @@ class Post extends React.Component {
         });
     }
 
+    async createAnswer(){
+        const date = new Date();
+        const datetime = date.toLocaleDateString() + " " +date.toLocaleTimeString();
+        const data = {
+            "id": this.props.id,
+            "content": this.state.content,
+            "posted": datetime,
+            "user": this.props.username
+        }
+
+        await fetch("/comments/"+this.props.id, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+            .then((response) => response.json()).then(data => {
+                this.componentDidMount();
+        });
+    }
+
+    handleClick(){
+        this.createAnswer();
+    }
+
     render() { 
         return <div>
             {this.state.data.map(tag=><div key={tag._id} className="post">
@@ -79,7 +105,7 @@ class Post extends React.Component {
                     <div className="postInfo">{tag.user}</div>
                     <div className="postComment">
                         <div className="postMessage">{tag.content}</div>
-                        <AnswerButton value="Citera" content={tag.content} id={tag.id} username={tag.user}/>
+                        <button onClick={this.handleClick}>Skicka meddelande</button>
                     </div>
                 </div>
             </div>)}
@@ -148,14 +174,14 @@ class AnswerForm extends React.Component {
 
     async createAnswer(){
         const date = new Date();
-        const time = date.toLocaleDateString() + " " +date.toLocaleTimeString();
+        const datetime = date.toLocaleDateString() + " " +date.toLocaleTimeString();
         const data = {
             "id": this.props.id,
             "content": this.state.content,
-            "posted": time,
+            "posted": datetime,
             "user": this.props.username
         }
-        //create comment on city chatt
+
         await fetch("/comments/"+this.props.id, {
             method: 'POST',
             headers: {'Content-Type': 'application/json' },
@@ -163,7 +189,7 @@ class AnswerForm extends React.Component {
         })
             .then((response) => response.json()).then(data => {
                 console.log(data);
-                ReactDOM.render(<Container type="" id={data.id} username={data.user}/>, document.getElementById("content"));
+                
         });
     }
 
@@ -174,10 +200,11 @@ class AnswerForm extends React.Component {
     handleOnChange(event){
         this.setState({content: event.target.value});
     }
+
     render() { 
         return <div className="createPost">
             <textarea onChange={this.handleOnChange} placeholder={this.state.content}></textarea>
-            <button onClick={this.handleClick}>Skicka meddleande</button>
+            <button onClick={this.handleClick}>Skicka meddelande</button>
         </div>;
     }
 }

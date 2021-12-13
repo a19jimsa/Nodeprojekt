@@ -44771,7 +44771,7 @@ var require_commentsRoute = __commonJS((exports2, module2) => {
       if (err)
         throw err;
       console.log("1 document inserted");
-      res.status(201).send({msg: result});
+      res.status(201).send(result);
     });
   });
   module2.exports = router;
