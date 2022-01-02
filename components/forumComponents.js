@@ -54,7 +54,7 @@ class Breadcrums extends React.Component {
 class Post extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {data: [], show: false, placeholder: "Skriv ett svar"}
+        this.state = {data: [], show: false, placeholder: "Skriv ett svar", content: ""}
         this.handleClick = this.handleClick.bind(this);
         this.handleShowClick = this.handleShowClick.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
@@ -89,25 +89,24 @@ class Post extends React.Component {
         })
             .then((response) => response.json()).then(data => {
                 this.componentDidMount();
+                this.setState({content: ""})
         });
     }
 
-    handleClick(){
-        this.createAnswer();
-    }
-
-    handleShowClick(){
+    handleShowClick(content){
+        if(this.state.content.toString() != ""){
+            content = "[quote]"+this.state.content.toString()+"[/quote]";
+        }
         this.state.show = !this.state.show;
-        this.setState({show: this.state.show});
+        this.setState({show: this.state.show, content: this.state.content});
     }
 
     handleClick(){
-        this.createAnswer();
         this.handleShowClick();
+        this.createAnswer();
     }
 
     handleOnChange(event){
-        console.log(event.target.value);
         this.setState({content: event.target.value});
     }
 
@@ -120,17 +119,39 @@ class Post extends React.Component {
                 <div className="postContent">
                     <div className="postInfo">{tag.user}</div>
                     <div className="postComment">
-                        <div className="postMessage">{tag.content}</div>
+                        <div className="postMessage"><Quote content={tag.content} /></div>
                         <div className="quoterow">
-                            <button onClick={this.handleClick}>Citera</button>
+                            <button onClick={this.handleShowClick.bind(this, tag.content)}>Citera</button>
                         </div>
                     </div>
                 </div>
             </div>)}
             {this.state.show ? <div className="createPost">
-            <textarea onChange={this.handleOnChange} placeholder={this.state.placeholder}></textarea>
+            <textarea onChange={this.handleOnChange} placeholder={this.state.placeholder} value={this.state.content}></textarea>
             <button onClick={this.handleClick}>Skicka svar</button>
         </div> : <button onClick={this.handleShowClick}>Skriv Svar</button>}
         </div>
+    }
+}
+
+class Quote extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {content: ""}
+    }
+
+    async componentDidMount(){
+        var content = this.props.content;
+        if(content.includes("[quote]")){
+            content = "<div class='quote'>"+this.props.content+"</div>";
+            this.setState({content: content})
+        }else{
+            content = this.props.content;
+            this.setState({content: content})
+        }
+    }
+
+    render() { 
+        return <div dangerouslySetInnerHTML={{ __html: this.state.content }} />;
     }
 }
