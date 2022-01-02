@@ -24,6 +24,16 @@ header{
     padding: 10px;
 }
 
+.threadhead{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    margin: auto;
+    padding: 0px;
+}
+
 ul {
     display: flex;
 }
@@ -183,9 +193,6 @@ th{
     padding: 10px;
 }
 
-tr:nth-child(even){
-    background-color: green;
-}
 
 th:first-child{
     border-radius: 5px 0px 0px 0px;
@@ -198,4 +205,14 @@ th:last-child{
 
 tr{
     height: 50px;
+}
+
+.quoterow{
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.quoterow > button{
+    margin-left: 10px;
 }

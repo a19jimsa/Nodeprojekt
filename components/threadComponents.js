@@ -23,7 +23,7 @@ class ForumThreads extends React.Component {
 
     render() { 
         return <div>
-            <div className="head"><CreateThread /><div>Sök: <input type="text"></input></div></div>
+            <div className="threadhead"><CreateThread /><div>Sök: <input type="text"></input></div></div>
             <table>
                 <thead>
                 <tr>
@@ -44,7 +44,6 @@ class CreateThread extends React.Component {
     constructor(props) {
         super(props);
         this.state = {show: false}
-
         this.handleClick = this.handleClick.bind(this);
     }
 
@@ -72,7 +71,6 @@ class CreateThread extends React.Component {
 class ThreadForm extends React.Component {
     constructor(props) {
         super(props);
-
         this.handleClick = this.handleClick.bind(this);
         this.handleOnChange = this.handleOnChange.bind(this);
     }

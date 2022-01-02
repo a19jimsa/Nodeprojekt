@@ -34,9 +34,7 @@ class Container extends React.Component {
     render() {
         if(this.props.type == "Forum"){
             return <div className="container">
-            <Breadcrums />
             <Post id={this.props.id} />
-            <AnswerButton value="Skriv svar" id={this.props.id} username={this.props.username} />
             </div>
         }else{
             return <div className="container">
@@ -47,21 +45,23 @@ class Container extends React.Component {
 }
 
 class Breadcrums extends React.Component {
+    //Hämta category och lägg till som breadcrum
     render() { 
-        return <div className="breadcrums">Forum/Komponenter/Kylning</div>;
+        return <div className="breadcrums">Trådar</div>;
     }
 }
 
 class Post extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {data: []}
-        console.log("Posten har laddats");
+        this.state = {data: [], show: false, placeholder: "Skriv ett svar"}
         this.handleClick = this.handleClick.bind(this);
+        this.handleShowClick = this.handleShowClick.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
     }
 
     async componentDidMount(){
-        //create comment on city chatt
+        //GET all comments on specific thread
         await fetch("/comments/"+this.props.id, {
             method: 'GET',
             headers: {'Content-Type': 'application/json' }
@@ -96,8 +96,24 @@ class Post extends React.Component {
         this.createAnswer();
     }
 
+    handleShowClick(){
+        this.state.show = !this.state.show;
+        this.setState({show: this.state.show});
+    }
+
+    handleClick(){
+        this.createAnswer();
+        this.handleShowClick();
+    }
+
+    handleOnChange(event){
+        console.log(event.target.value);
+        this.setState({content: event.target.value});
+    }
+
     render() { 
         return <div>
+            <div className="threadhead"><Breadcrums /><div>Sök i tråd: <input type="text"></input></div></div>
             {this.state.data.map(tag=><div key={tag._id} className="post">
                 <h1>{tag.topic}</h1>
                 <div className="postHead">Datum: {tag.posted}</div>
@@ -105,106 +121,16 @@ class Post extends React.Component {
                     <div className="postInfo">{tag.user}</div>
                     <div className="postComment">
                         <div className="postMessage">{tag.content}</div>
-                        <button onClick={this.handleClick}>Skicka meddelande</button>
+                        <div className="quoterow">
+                            <button onClick={this.handleClick}>Citera</button>
+                        </div>
                     </div>
                 </div>
             </div>)}
+            {this.state.show ? <div className="createPost">
+            <textarea onChange={this.handleOnChange} placeholder={this.state.placeholder}></textarea>
+            <button onClick={this.handleClick}>Skicka svar</button>
+        </div> : <button onClick={this.handleShowClick}>Skriv Svar</button>}
         </div>
-    }
-}
-
-class AnswerButton extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {show: false}
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(){
-        this.state.show = !this.state.show;
-        this.setState({show: this.state.show});
-    }
-
-    render() { 
-        if(this.state.show){
-            return(
-            <div className="createPost">
-                <AnswerForm id={this.props.id} content={this.props.content} username={this.props.username} />
-            </div>
-            )
-        }else{
-            return <div className="answerButton"><button onClick={this.handleClick}>{this.props.value}</button></div>
-        }
-        
-    }
-}
-
-class PostForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {content: "Skriv ett svar"}
-        this.handleClick = this.handleClick.bind(this);
-        this.handleOnChange = this.handleOnChange.bind(this);
-    }
-
-    handleClick(){
-
-    }
-
-    handleOnChange(event){
-        this.state({value: event.target.value});
-    }
-
-
-    render() { 
-        return <div className="createPost">
-            <textarea onChange={this.handleOnChange} placeholder={this.state.content}></textarea>
-            <button onClick={this.handleClick}>Svara</button>
-        </div>;
-    }
-}
- 
-class AnswerForm extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {content: "Skriv ett svar"}
-        this.handleClick = this.handleClick.bind(this);
-        this.handleOnChange = this.handleOnChange.bind(this);
-    }
-
-    async createAnswer(){
-        const date = new Date();
-        const datetime = date.toLocaleDateString() + " " +date.toLocaleTimeString();
-        const data = {
-            "id": this.props.id,
-            "content": this.state.content,
-            "posted": datetime,
-            "user": this.props.username
-        }
-
-        await fetch("/comments/"+this.props.id, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        })
-            .then((response) => response.json()).then(data => {
-                console.log(data);
-                
-        });
-    }
-
-    handleClick(){
-        this.createAnswer();
-    }
-
-    handleOnChange(event){
-        this.setState({content: event.target.value});
-    }
-
-    render() { 
-        return <div className="createPost">
-            <textarea onChange={this.handleOnChange} placeholder={this.state.content}></textarea>
-            <button onClick={this.handleClick}>Skicka meddelande</button>
-        </div>;
     }
 }
