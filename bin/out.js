@@ -44766,7 +44766,7 @@ var require_commentsRoute = __commonJS((exports2, module2) => {
   });
   router.post("/:threadId", express2.json(), function(req, res) {
     const dbConnect = db.getDb();
-    var myobj = {["id"]: req.params.threadId, ["content"]: req.body.content, ["posted"]: req.body.posted, ["user"]: req.body.user};
+    var myobj = {["id"]: req.params.threadId, ["topic"]: req.body.topic, ["content"]: req.body.content, ["posted"]: req.body.posted, ["user"]: req.body.user};
     dbConnect.collection("comments").insertOne(myobj, function(err, result) {
       if (err)
         throw err;
