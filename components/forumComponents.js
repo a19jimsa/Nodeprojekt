@@ -74,7 +74,7 @@ class Post extends React.Component {
 
     async createAnswer(){
         const date = new Date();
-        const datetime = date.toLocaleDateString() + " " +date.toLocaleTimeString();
+        const datetime = date.toLocaleDateString() + " " + date.toLocaleTimeString();
         const data = {
             "id": this.props.id,
             "content": this.state.content,

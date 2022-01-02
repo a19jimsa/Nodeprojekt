@@ -44766,7 +44766,7 @@ var require_commentsRoute = __commonJS((exports2, module2) => {
   });
   router.post("/:threadId", express2.json(), function(req, res) {
     const dbConnect = db.getDb();
-    var myobj = {["id"]: req.params.threadId, ["topic"]: req.body.topic, ["content"]: req.body.content, ["posted"]: req.body.posted, ["user"]: req.body.user};
+    var myobj = {["id"]: req.params.threadId, ["content"]: req.body.content, ["posted"]: req.body.posted, ["user"]: req.body.user};
     dbConnect.collection("comments").insertOne(myobj, function(err, result) {
       if (err)
         throw err;
@@ -44798,13 +44798,23 @@ var require_threadRoutes = __commonJS((exports2, module2) => {
       }
     });
   });
+  router.get("/:keyword", (req, res) => {
+    const dbConnect = db.getDb();
+    dbConnect.collection("threads").find({["category"]: req.params.keyword}).toArray(function(err, result) {
+      if (err) {
+        console.log("Something went wrong with DB call", err);
+      } else {
+        res.status(200).send(result);
+      }
+    });
+  });
   router.post("/", express2.json(), function(req, res) {
     const dbConnect = db.getDb();
     var myobj = {["id"]: req.body.id, ["topic"]: req.body.topic, ["category"]: req.body.category, ["content"]: req.body.content, ["posted"]: req.body.posted, ["user"]: req.body.user};
     dbConnect.collection("threads").insertOne(myobj, function(err, result) {
       if (err)
         throw err;
-      console.log("1 document inserted");
+      console.log("Created new thread");
       res.status(201).send(result);
     });
   });
