@@ -92,12 +92,14 @@ class Post extends React.Component {
         });
     }
 
-    handleShowClick(content){
-        if(this.state.content.toString() != ""){
-            content = "[quote]"+this.state.content.toString()+"[/quote]";
+    handleShowClick(message){
+        console.log(message);
+        if(message != ""){
+            message = "[quote]"+message+"[/quote]";
         }
+        
         this.state.show = !this.state.show;
-        this.setState({show: this.state.show, content: this.state.content});
+        this.setState({show: this.state.show, content: message});
     }
 
     handleClick(){
@@ -116,7 +118,7 @@ class Post extends React.Component {
                 <h1>{tag.topic}</h1>
                 <div className="postHead">Datum: {tag.posted}</div>
                 <div className="postContent">
-                    <div className="postInfo">{tag.user}</div>
+                    <div className="postInfo">Användare: {tag.user}</div>
                     <div className="postComment">
                         <div className="postMessage"><Quote content={tag.content} /></div>
                         <div className="quoterow">
@@ -128,7 +130,7 @@ class Post extends React.Component {
             {this.state.show ? <div className="createPost">
             <textarea onChange={this.handleOnChange} placeholder={this.state.placeholder} value={this.state.content}></textarea>
             <button onClick={this.handleClick}>Skicka svar</button>
-        </div> : <button onClick={this.handleShowClick}>Skriv Svar</button>}
+        </div> : <button onClick={this.handleShowClick.bind(this, "")}>Skriv Svar</button>}
         </div>
     }
 }
@@ -141,16 +143,15 @@ class Quote extends React.Component {
 
     async componentDidMount(){
         var content = this.props.content;
+        console.log(content);
         if(content.includes("[quote]")){
-            content = "<div class='quote'>"+this.props.content+"</div>";
-            this.setState({content: content})
-        }else{
-            content = this.props.content;
-            this.setState({content: content})
+            content = content.replaceAll("[quote]", "<div class='quote'>");
+            content = content.replaceAll("[/quote]", "</div>");
         }
+        this.setState({content: content});
     }
 
     render() { 
-        return <div dangerouslySetInnerHTML={{ __html: this.state.content }} />;
+        return <div dangerouslySetInnerHTML={{ __html: this.state.content }} />
     }
 }
