@@ -78,7 +78,7 @@ class Post extends React.Component {
             "id": this.props.id,
             "content": this.state.content,
             "posted": datetime,
-            "user": this.props.username
+            "user": "Jimmy"
         }
 
         await fetch("/comments/"+this.props.id, {

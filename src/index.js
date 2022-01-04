@@ -12,6 +12,9 @@ app.use("/comments", commentsRoute);
 const threadRoute = require("./threadRoutes")
 app.use("/threads", threadRoute);
 
+const userRoute = require("./usersRoute")
+app.use("/users", userRoute);
+
 //Hämtar ut startup.html när localhost:3000 körs.
 app.get('/', function(req, res){
     res.sendFile('/src/index.html',{root: '.'})

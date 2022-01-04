@@ -44821,6 +44821,30 @@ var require_threadRoutes = __commonJS((exports2, module2) => {
   module2.exports = router;
 });
 
+// src/usersRoute.js
+var require_usersRoute = __commonJS((exports2, module2) => {
+  var express2 = require_express2();
+  var router = express2.Router();
+  var db = require_mongo_connection();
+  db.connectToServer(function(err) {
+    if (err) {
+      console.error(err);
+      process.exit();
+    }
+  });
+  router.post("/:username", express2.json(), function(req, res) {
+    const dbConnect = db.getDb();
+    var myobj = {["username"]: req.params.threadId};
+    dbConnect.collection("users").insertOne(myobj, function(err, result) {
+      if (err)
+        throw err;
+      console.log("1 document inserted");
+      res.status(201).send(result);
+    });
+  });
+  module2.exports = router;
+});
+
 // src/index.js
 var {application} = require_express2();
 var express = require_express2();
@@ -44831,6 +44855,8 @@ var commentsRoute = require_commentsRoute();
 app.use("/comments", commentsRoute);
 var threadRoute = require_threadRoutes();
 app.use("/threads", threadRoute);
+var userRoute = require_usersRoute();
+app.use("/users", userRoute);
 app.get("/", function(req, res) {
   res.sendFile("/src/index.html", {root: "."});
   console.log("Start");

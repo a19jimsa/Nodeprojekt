@@ -35,13 +35,32 @@ class DialogBox extends React.Component {
 class CreateUserForm extends React.Component {
     constructor(props) {
         super(props);
-        this.state= {show: false};
+        this.state= {show: false, username: "", created: ""};
         this.handleClick = this.handleClick.bind(this);
+        this.createUserClick = this.createUserClick.bind(this);
+        this.handleOnChange = this.handleOnChange.bind(this);
+    }
+
+    async createUserClick(){
+        //create comment on city chatt
+        await fetch("/users/"+this.state.username, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json' },
+        })
+            .then((response) => response.json()).then(data => {
+                console.log(data);
+                this.setState({created: data.username});
+        });
     }
 
     handleClick(){
         this.state.show = !this.state.show;
         this.setState({show: this.state.show});
+    }
+
+    handleOnChange(event){
+        console.log(event.target.value);
+        this.setState({username: event.target.value});
     }
 
     render() { 
@@ -50,8 +69,9 @@ class CreateUserForm extends React.Component {
             <DialogBox>
                 <h1>Skapa användare</h1>
                 <label>Användarnamn</label>
-                <input type="text"></input>
-                <input type="button" value="Skapa användare"></input>
+                <input type="text" onChange={this.handleOnChange}></input>
+                <input type="button" value="Skapa användare" onClick={this.createUserClick}></input>
+                <div>Skapade användare: {this.state.created}</div>
             </DialogBox>
             </div>
         }else{
